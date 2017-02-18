@@ -49,3 +49,8 @@ C:\code\csharp6\TagSortService\TagSortService\bin\roslyn\vbc.exe.config
 C:\code\csharp6\TagSortService\TagSortService\bin\roslyn\vbc.rsp
 C:\code\csharp6\TagSortService\TagSortService\bin\Newtonsoft.Json.dll
 C:\code\csharp6\TagSortService\TagSortService\bin\Newtonsoft.Json.xml
+C:\code\csharp6\TagSortService\TagSortService\bin\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\code\csharp6\TagSortService\TagSortService\bin\MongoDB.Driver.Core.xml
+C:\code\csharp6\TagSortService\TagSortService\bin\xunit.runner.visualstudio.testadapter.dll
+C:\code\csharp6\TagSortService\TagSortService\bin\xunit.runner.utility.desktop.dll
+C:\code\csharp6\TagSortService\TagSortService\bin\xunit.abstractions.dll
