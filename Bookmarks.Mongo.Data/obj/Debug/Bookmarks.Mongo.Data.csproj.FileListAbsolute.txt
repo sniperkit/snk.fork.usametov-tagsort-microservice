@@ -46,3 +46,9 @@ C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\bin\Debug\MongoDB.Driver.xml
 C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\obj\Debug\Bookmarks.Mongo.Data.csprojResolveAssemblyReference.cache
 C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\obj\Debug\Bookmarks.Mongo.Data.dll
 C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\obj\Debug\Bookmarks.Mongo.Data.pdb
+C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\bin\Debug\AutoMapper.dll
+C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\bin\Debug\MongoDB.Bson.dll
+C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\bin\Debug\MongoDB.Driver.Core.dll
+C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\bin\Debug\MongoDB.Driver.dll
+C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\bin\Debug\MongoDB.Driver.Core.xml
