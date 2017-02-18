@@ -35,8 +35,8 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
         $scope.move = function (arrSrc, arrTrg, val) {
             
             var nextVal2focus = getNextVal(arrSrc, val);            
-            var newSrc = arrSrc.filter(t=> t.tag != val);            
-            var termCount = arrSrc.filter(t=> t.tag == val);
+            var newSrc = arrSrc.filter(t=> t.tag !== val);            
+            var termCount = arrSrc.filter(t=> t.tag === val);
             //and add it to target array            
             arrTrg = termCount.concat(arrTrg);            
             
@@ -53,7 +53,7 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
         }
 
         var getIdx = function (arrSrc, val) {
-            return arrSrc.findIndex(t=> t.tag == val);
+            return arrSrc.findIndex(t=> t.tag === val);
         }
 
         //hook tagmover routine to element's keyup event 
@@ -61,7 +61,7 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
             var srcList = $(listIdSelector);
 
             var arrowKeyUp = Rx.Observable.fromEvent(srcList, 'keyup')
-                                          .filter(e=>e.keyCode == 37 || e.keyCode == 39)
+                                          .filter(e=>e.keyCode === 37 || e.keyCode === 39)
                                           .map(function (e) {                                              
                                               return {
                                                   keyCode: e.keyCode
@@ -104,7 +104,7 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
     
         $scope.addEditTagBundleName = function(){
             if(typeof $scope.selectedTagBundleId === 'undefined'
-                || $scope.selectedTagBundleId == 'new')
+                || $scope.selectedTagBundleId === 'new')
             {
                 resolvePromise(tagRepository.createTagBundle
                                             ($scope.newTagBundleName, $scope.bookmarksCollectionId)
