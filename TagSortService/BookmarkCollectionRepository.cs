@@ -1,12 +1,9 @@
 ﻿using Bookmarks.Common;
 using Nancy;
-using Nancy.Extensions;
 using Nancy.ModelBinding;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace TagSortService
 {
@@ -89,6 +86,11 @@ namespace TagSortService
                                                 UpdateTagBundleNameById(tagBundle);
                                                 return HttpStatusCode.OK;
                                             };
+
+            Get["/bookmarksByTagBundle/{tagBundleName}/{skip}/{take}/"] =
+                parameters => Response.AsJson(GetBookmarksByTagBundle((string)parameters.tagBundleName
+                                                                    , (int)parameters.skip
+                                                                    , (int)parameters.take));
         }
 
         public IEnumerable<TagCount> CalculateTermCounts(int bufferSize)
