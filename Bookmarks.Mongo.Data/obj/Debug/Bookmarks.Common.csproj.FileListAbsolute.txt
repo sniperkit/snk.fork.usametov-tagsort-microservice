@@ -1,0 +1,33 @@
+C:\code\asta-nova\solr_import_util\Common\obj\Debug\Bookmarks.Common.csprojResolveAssemblyReference.cache
+C:\code\asta-nova\solr_import_util\Common\bin\Debug\Bookmarks.Common.dll
+C:\code\asta-nova\solr_import_util\Common\bin\Debug\Bookmarks.Common.pdb
+C:\code\asta-nova\solr_import_util\Common\obj\Debug\Bookmarks.Common.dll
+C:\code\asta-nova\solr_import_util\Common\obj\Debug\Bookmarks.Common.pdb
+C:\code\asta-nova\Card%20Sort%20Util\Common\bin\Debug\Bookmarks.Common.dll
+C:\code\asta-nova\Card%20Sort%20Util\Common\bin\Debug\Bookmarks.Common.pdb
+C:\code\asta-nova\Card%20Sort%20Util\Common\obj\Debug\Bookmarks.Common.csprojResolveAssemblyReference.cache
+C:\code\asta-nova\Card%20Sort%20Util\Common\obj\Debug\Bookmarks.Common.dll
+C:\code\asta-nova\Card%20Sort%20Util\Common\obj\Debug\Bookmarks.Common.pdb
+C:\code\asta-nova\Card Sort Util\Common\bin\Debug\Bookmarks.Common.dll
+C:\code\asta-nova\Card Sort Util\Common\bin\Debug\Bookmarks.Common.pdb
+C:\code\asta-nova\Card Sort Util\Common\obj\Debug\Bookmarks.Common.dll
+C:\code\asta-nova\Card Sort Util\Common\obj\Debug\Bookmarks.Common.pdb
+C:\code\asta-nova\Card Sort Util\Common\bin\Debug\Bookmarks.Common.dll.CodeAnalysisLog.xml
+C:\code\asta-nova\Card Sort Util\Common\bin\Debug\Bookmarks.Common.dll.lastcodeanalysissucceeded
+C:\code\csharp6\Tagging-Util\Common\bin\Debug\Bookmarks.Common.dll
+C:\code\csharp6\Tagging-Util\Common\bin\Debug\Bookmarks.Common.pdb
+C:\code\csharp6\Tagging-Util\Common\obj\Debug\Bookmarks.Common.csprojResolveAssemblyReference.cache
+C:\code\csharp6\Tagging-Util\Common\obj\Debug\Bookmarks.Common.dll
+C:\code\csharp6\Tagging-Util\Common\obj\Debug\Bookmarks.Common.pdb
+C:\code\csharp6\Tagging-Util\Common\bin\Debug\MongoDB.Bson.dll
+C:\code\csharp6\Tagging-Util\Common\bin\Debug\MongoDB.Bson.xml
+C:\code\csharp-vs2013\Bookmarks.Common\obj\Debug\Bookmarks.Common.csprojResolveAssemblyReference.cache
+C:\code\csharp-vs2013\Bookmarks.Common\obj\Debug\Bookmarks.Common.dll
+C:\code\csharp-vs2013\Bookmarks.Common\obj\Debug\Bookmarks.Common.pdb
+C:\code\csharp-vs2013\Bookmarks.Common\bin\Debug\Bookmarks.Common.dll
+C:\code\csharp-vs2013\Bookmarks.Common\bin\Debug\Bookmarks.Common.pdb
+C:\code\csharp-vs2013\Bookmarks.Common\bin\Debug\MongoDB.Bson.xml
+C:\code\csharp-vs2013\Bookmarks.Common\bin\Debug\MongoDB.Bson.dll
+C:\code\csharp-vs2013\Bookmarks.Common\bin\Debug\MongoDB.Driver.Core.dll
+C:\code\csharp-vs2013\Bookmarks.Common\bin\Debug\MongoDB.Driver.dll
+C:\code\csharp-vs2013\Bookmarks.Common\bin\Debug\MongoDB.Driver.xml
