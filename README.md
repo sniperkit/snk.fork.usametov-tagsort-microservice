@@ -13,6 +13,7 @@ Some of the solutions dependencies:
 * Automapper (from Nuget)
 * MongoDB (from Nuget)
 * xUnit (from Nuget)
+* FakeItEasy (from Nuget)
 * [Bookmarks.Common](https://github.com/usametov/Bookmarks-ETL/tree/master/Common)
 
 
