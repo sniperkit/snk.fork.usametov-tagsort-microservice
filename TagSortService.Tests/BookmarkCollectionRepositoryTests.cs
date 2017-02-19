@@ -10,7 +10,7 @@ namespace TagSortService.Tests
         [Fact]
         public void Should_answer_200_onRootPath()
         {
-            var sut = new Browser(new DefaultNancyBootstrapper());
+            var sut = new Browser(new BookmarksBootstrapper());
 
             var actual = sut.Get("/");
 
@@ -20,7 +20,7 @@ namespace TagSortService.Tests
         [Fact]
         public void Shoud_get_recycling_bookmarks()
         {
-            var sut = new Browser(new DefaultNancyBootstrapper());
+            var sut = new Browser(new BookmarksBootstrapper());
 
             var actual = sut.Get("/bookmarksByTagBundle/recycling/0/3000/");
 
