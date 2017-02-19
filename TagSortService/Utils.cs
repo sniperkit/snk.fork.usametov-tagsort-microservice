@@ -13,12 +13,13 @@ namespace TagSortService
             ConnectionStringsSection section =
                 ConfigurationManager.GetSection("connectionStrings") as ConnectionStringsSection;
 
-            if (section.ConnectionStrings.Count > 0)
-                return section.ConnectionStrings[0].ConnectionString;
-            
-            //appHarbor case: get from appSettings
-            return ConfigurationManager.AppSettings["MONGOLAB_URI"] ?? 
-                    ConfigurationManager.AppSettings.Get("MONGOHQ_URL");            
+            return
+                   !string.IsNullOrEmpty(ConfigurationManager.AppSettings["MONGOLAB_URI"]) ?
+                   ConfigurationManager.AppSettings["MONGOLAB_URI"] :
+                   !string.IsNullOrEmpty(ConfigurationManager.AppSettings["MONGOHQ_URL"]) ?
+                   ConfigurationManager.AppSettings.Get("MONGOHQ_URL") :
+                   section.ConnectionStrings.Count > 0 ?
+                   section.ConnectionStrings[0].ConnectionString : null;
         }
 
         public static string[] ToStringArray(this TagCount[] tagCounts) 
