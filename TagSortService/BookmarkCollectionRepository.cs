@@ -9,28 +9,19 @@ namespace TagSortService
 {
     public class BookmarkCollectionRepository : NancyModule
     {        
-        public string ConnectionString
-        {
-            get
-            {
-                return Utils.GetConnectionString();
-            }
-        }
-
         IBookmarksContext context;
         IBookmarksContext BookmarksContext
         {
             get
             {
-                if (context == null)
-                    context = new Bookmarks.Mongo.Data.BookmarksContext(ConnectionString);
-
                 return context;
             }
         }
 
-        public BookmarkCollectionRepository()
+        public BookmarkCollectionRepository(IBookmarksContext bookmarkContext)
         {
+            context = bookmarkContext;
+
             Get["/"] = _ => "Welcome to TagSortService Home page ";
 
             Get["/termcounts/{bufferSize:int}"] = 
@@ -127,10 +118,10 @@ namespace TagSortService
             return BookmarksContext.GetBookmarksByTagBundle(tagBundleName, skip, take);
         }
         
-        public IEnumerable<Bookmark> GetBookmarksByTagBundle(string tagBundleName, int? skip, int? take)
-        {
-            return BookmarksContext.GetBookmarksByTagBundle(tagBundleName, skip, take);
-        }
+        //public IEnumerable<Bookmark> GetBookmarksByTagBundle(string tagBundleName, int? skip, int? take)
+        //{
+        //    return BookmarksContext.GetBookmarksByTagBundle(tagBundleName, skip, take);
+        //}
 
         public IEnumerable<TagCount> GetNextMostFrequentTags
             (string tagBundleId, int limitTermCounts, string excludeTagBundleNames)
