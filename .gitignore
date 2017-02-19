@@ -4,3 +4,10 @@
 
 /node_modules
 /.vs
+/Bookmarks.Mongo.Data/bin/Debug
+/Bookmarks.Mongo.Data/obj/Debug
+/TagSortService/bin
+/TagSortService/obj
+/TagSortService.Tests/bin/Debug
+/TagSortService.Tests/obj/Debug
+
