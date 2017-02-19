@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="BookmarkCollectionRepositoryTests.cs" />
     <Compile Include="BookmarkContextTests.cs" />
+    <Compile Include="ConnectionStringTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +95,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
