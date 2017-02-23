@@ -1,14 +1,26 @@
 ﻿using System.Configuration;
 using Bookmarks.Common;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System;
+using System.IO;
+using System.Text;
+using Org.BouncyCastle.Crypto.Engines;
+using Org.BouncyCastle.Crypto.Modes;
+using Org.BouncyCastle.Crypto.Paddings;
+using Org.BouncyCastle.Crypto.Parameters;
+using Yort.Otp;
+using System.Dynamic;
 
 namespace TagSortService
 {
     public static class Utils
     {
         public const string UNDEFINED = "undefined";
+        private const int _keySize = 256;
+        private const string SEPARATOR = "^-^";
+        public const string SESSION_KEY = "TagSortServiceUser";
 
         /// <summary>
         /// this will throw InvalidOperationException in case if connection string has not been set up
@@ -32,6 +44,42 @@ namespace TagSortService
             return GetConfig().First(s => s.IsSomething()).Value;
         }
 
+        public static string DeriveOneTimeKey(string nonce)
+        {            
+            var hashBytes = new Sha512HashAlgorithm().ComputeHash
+                ( Encoding.UTF8.GetBytes(GetConnectionString())
+                , Encoding.UTF8.GetBytes(nonce));
+
+            return Encoding.UTF8.GetString(hashBytes);
+        }
+
+        public static string EncryptUsername(string userName)
+        {
+            var nonce = DateTime.Now.ToLongTimeString();
+            var oneTimeTicket = DeriveOneTimeKey(nonce);
+
+            var key = Encoding.UTF8.GetBytes(oneTimeTicket)
+                                    .Take(_keySize / 8).ToArray();
+
+            var secret = Encoding.UTF8.GetBytes(userName.PadRight(_keySize / 8));                        
+
+            return Convert.ToBase64String(key.Zip(secret, (b1, b2) => (byte)(b1 ^ b2)).ToArray()) 
+                + SEPARATOR + nonce;
+        }
+        
+        public static string DecryptUsername(string encryptedUserName)
+        {
+            var context = encryptedUserName.Split
+                (new string[] { SEPARATOR }, StringSplitOptions.RemoveEmptyEntries);
+
+            var key = Encoding.UTF8.GetBytes(DeriveOneTimeKey(context[1]))
+                                    .Take(_keySize / 8).ToArray();
+
+            var secret = Convert.FromBase64String(context[0].PadRight(_keySize / 8));
+
+            return Encoding.UTF8.GetString(key.Zip(secret, (b1, b2) => (byte)(b1 ^ b2)).ToArray()); 
+        }
+              
         public static string[] ToStringArray(this TagCount[] tagCounts) 
         {
             return tagCounts.Select(t => t.Tag).ToArray();
@@ -58,6 +106,6 @@ namespace TagSortService
                 ? section.ConnectionStrings[0].ConnectionString.GetMaybeFromString() 
                 : Maybe<string>.Nothing
               };            
-        }
+        }        
     }
 }

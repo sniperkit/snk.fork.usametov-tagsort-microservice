@@ -1,6 +1,7 @@
 ﻿using Bookmarks.Common;
 using Nancy;
 using Nancy.ModelBinding;
+using Nancy.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,12 @@ namespace TagSortService
 
         public BookmarkCollectionRepository(IBookmarksContext bookmarkContext)
         {
-            context = bookmarkContext;
+            this.RequiresAuthentication();
 
-            Get["/"] = _ => "Welcome to TagSortService Home page ";
+            context = bookmarkContext;
+            
+            Get["/"] = 
+                _ => Response.AsRedirect("/Content/src/app/tagBundle/manageTagBundles.html#?bookmarksCollectionId=");
 
             Get["/termcounts/{bufferSize:int}"] = 
                 parameters => Response.AsJson(CalculateTermCounts((int)parameters.bufferSize));

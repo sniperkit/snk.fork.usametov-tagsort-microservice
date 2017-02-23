@@ -499,13 +499,13 @@ namespace Bookmarks.Mongo.Data
             return bookmarks.Find(filterDef).Skip(skip).Limit(take);
         }
 
-        public Bookmarks.Common.User GetUserByUsernameAndPasswdHash(string userName, string passwordHash)
+        public Bookmarks.Common.User GetUserByUsername(string userName)
         {
 
             var users = _database.GetCollection<Bookmarks.Mongo.Data.User>(USERS_COLLECTION);
 
             return MapperObj.Map<Bookmarks.Common.User>
-                (users.Find(u => u.Name == userName && u.PasswordHash == passwordHash).FirstOrDefault());
+                (users.Find(u => u.Name == userName /*&& u.PasswordHash == passwordHash*/).FirstOrDefault());
         }
 
         public IEnumerable<Bookmarks.Common.BookmarksCollections> GetBookmarksCollections()
