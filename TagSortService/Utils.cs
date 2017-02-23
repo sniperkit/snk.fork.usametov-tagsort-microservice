@@ -41,10 +41,10 @@ namespace TagSortService
             //       section.ConnectionStrings[0].ConnectionString : null;
             #endregion
 
-            return GetConfig().First(s => s.IsSomething()).Value;
+            return GetDBConnectionConfig().First(s => s.IsSomething()).Value;
         }
 
-        internal static string GetAppSetting(string key)
+        public static string GetAppSetting(string key)
         {
             return ConfigurationManager.AppSettings[key];
         }
@@ -97,7 +97,7 @@ namespace TagSortService
                 : s.ToMaybe();
         }
 
-        public static IEnumerable<Maybe<string>> GetConfig()
+        public static IEnumerable<Maybe<string>> GetDBConnectionConfig()
         {
             ConnectionStringsSection section =
                 ConfigurationManager.GetSection("connectionStrings") as ConnectionStringsSection;
@@ -111,6 +111,6 @@ namespace TagSortService
                 ? section.ConnectionStrings[0].ConnectionString.GetMaybeFromString() 
                 : Maybe<string>.Nothing
               };            
-        }        
+        }
     }
 }

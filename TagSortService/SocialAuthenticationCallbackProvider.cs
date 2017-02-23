@@ -31,6 +31,7 @@ namespace TagSortService
 
             var loggedInUser = BookmarksContext.GetUserByUsername(module.Context.CurrentUser.UserName);
 
+            //TODO: add logging here
             if (loggedInUser == null)
             {
                 module.Context.CurrentUser = null;

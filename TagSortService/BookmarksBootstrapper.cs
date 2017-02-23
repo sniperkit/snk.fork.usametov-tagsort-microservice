@@ -30,7 +30,7 @@ namespace TagSortService
             container.Register<IBookmarksContext>(context);
 
             var twitterProvider = new TwitterProvider(new ProviderParams { PublicApiKey = Utils.GetAppSetting("TwitterConsumerKey"), SecretApiKey = Utils.GetAppSetting("TwitterConsumerSecret") });
-            var facebookProvider = new FacebookProvider(new ProviderParams { PublicApiKey = Utils.GetAppSetting("FacebookAppId"), SecretApiKey = Utils.GetAppSetting("FacebookAppSecret") });
+            var facebookProvider = new FacebookProvider(new ProviderParams { PublicApiKey = Utils.GetAppSetting("FBClientId"), SecretApiKey = Utils.GetAppSetting("FBClientSecret") });
             var googleProvider = new GoogleProvider(new ProviderParams { PublicApiKey = Utils.GetAppSetting("GoogleConsumerKey"), SecretApiKey = Utils.GetAppSetting("GoogleConsumerSecret") });
 
             var authenticationProviderFactory = new AuthenticationProviderFactory();
