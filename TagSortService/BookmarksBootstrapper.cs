@@ -14,13 +14,6 @@ namespace TagSortService
 {
     public class BookmarksBootstrapper : DefaultNancyBootstrapper
     {
-        private const string TwitterConsumerKey = "qUlyMK0gfsIAMEbCxEYK66Ba9";
-        private const string TwitterConsumerSecret = "T0Qmqwp0XFSU8zBFQWafvx7IfO2rT6scF0mNdfN7v1BKVDy81C";
-        private const string FacebookAppId = "*key*";
-        private const string FacebookAppSecret = "*secret*";
-        private const string GoogleConsumerKey = "*key*";
-        private const string GoogleConsumerSecret = "*secret*";
-
         public string ConnectionString
         {
             get
@@ -36,9 +29,9 @@ namespace TagSortService
             var context = new Bookmarks.Mongo.Data.BookmarksContext(ConnectionString);
             container.Register<IBookmarksContext>(context);
 
-            var twitterProvider = new TwitterProvider(new ProviderParams { PublicApiKey = TwitterConsumerKey, SecretApiKey = TwitterConsumerSecret });
-            var facebookProvider = new FacebookProvider(new ProviderParams { PublicApiKey = FacebookAppId, SecretApiKey = FacebookAppSecret });
-            var googleProvider = new GoogleProvider(new ProviderParams { PublicApiKey = GoogleConsumerKey, SecretApiKey = GoogleConsumerSecret });
+            var twitterProvider = new TwitterProvider(new ProviderParams { PublicApiKey = Utils.GetAppSetting("TwitterConsumerKey"), SecretApiKey = Utils.GetAppSetting("TwitterConsumerSecret") });
+            var facebookProvider = new FacebookProvider(new ProviderParams { PublicApiKey = Utils.GetAppSetting("FacebookAppId"), SecretApiKey = Utils.GetAppSetting("FacebookAppSecret") });
+            var googleProvider = new GoogleProvider(new ProviderParams { PublicApiKey = Utils.GetAppSetting("GoogleConsumerKey"), SecretApiKey = Utils.GetAppSetting("GoogleConsumerSecret") });
 
             var authenticationProviderFactory = new AuthenticationProviderFactory();
 

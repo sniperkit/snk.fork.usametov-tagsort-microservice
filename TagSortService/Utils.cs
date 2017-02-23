@@ -44,6 +44,11 @@ namespace TagSortService
             return GetConfig().First(s => s.IsSomething()).Value;
         }
 
+        internal static string GetAppSetting(string key)
+        {
+            return ConfigurationManager.AppSettings[key];
+        }
+
         public static string DeriveOneTimeKey(string nonce)
         {            
             var hashBytes = new Sha512HashAlgorithm().ComputeHash
