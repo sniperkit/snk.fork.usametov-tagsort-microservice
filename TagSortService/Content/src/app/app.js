@@ -3,6 +3,7 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
     ("tagBundleCtrl", ['$scope', '$location', '$window', 'tagRepository'
     , function ($scope, $location, $window, tagRepository) {
         
+        $scope.LoginRequired = true;
         $scope.states_transition_matrix = {};
         $scope.buffer_size = $scope.buffer_size ? $scope.buffer_size : 1000;
 
@@ -93,14 +94,7 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
                                console.log("SaveTagBundleAndExcludeList, response status", response.status);
                            });
         };
-              
-        //this will be called for newly created tag bundles
-        //$scope.saveExcludeList = function () {
-        //    resolvePromise(tagRepository.saveExcludeList($scope.selectedTagBundleId,$scope.exclTags)
-        //                   , function (response) {
-        //                       console.log("saveExcludeList, response status", response.status);
-        //                   });
-        //}
+           
     
         $scope.addEditTagBundleName = function () {
             if (typeof $scope.selectedTagBundleId === 'undefined'
@@ -115,7 +109,7 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
             else {
                 resolvePromise(tagRepository.saveTagBundleName($scope.selectedTagBundleId, $scope.newTagBundleName)
                                , function (response) {
-                                   console.log("saveTagBundleName, response status", response.status);
+                                   console.log("saveTagBundleName, response status", response.status);                                   
                                });
             }
         };
@@ -123,7 +117,10 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
         var resolvePromise = function (promise, successFn) {
             Rx.Observable.fromPromise(promise)
                         .subscribe(successFn, function (err) {
-                            console.log('Error: %s', err);
+                            console.log('Error: %s, %s', err.status, err.statusText);
+                            if (err.status == 401) {
+                                $scope.LoginRequired = true;
+                            }
                         }
                         , null);
         };
@@ -195,7 +192,7 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
 
             resolvePromise(promise, function (response) {
                 $scope.existingTagBundles = response.data;
-                console.log("tag bundles", response.data);
+                //console.log("tag bundles", response.data);
                 var slctBundleId = $scope.GetSlctdTagBundleId(response.data ? response.data[0].id : null);
                 angular.forEach(funcArray, function (func) {
                     func(slctBundleId);
@@ -203,6 +200,7 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
 
                 $scope.selectedTagBundleId = slctBundleId;
                 $scope.bookmarksCollectionId = bookmarksCollectionId;
+                $scope.LoginRequired = false;
 
                 $scope.$apply();
             });
@@ -237,12 +235,13 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
             $scope.InitPage([]);
         };
 
+        
+
     }]).factory("tagRepository", ['$http', function ($http) {
        
         $http.defaults.headers.common = {};
         $http.defaults.headers.common["Content-Type"] = "application/json";
-        $http.defaults.headers.common['Authorization'] = 'dWthdGF5OmJvbGF2ZXJzb24=';
-
+        
         $http.defaults.headers.post = {};
         $http.defaults.headers.put = {};
         $http.defaults.headers.patch = {};
@@ -296,23 +295,7 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
 
             return promise;
         };
-        
-        //var saveExcludeList = function (tagBundleId, exclTags) {
-
-        //    console.log('tagBundle in saving exclTags', tagBundleId);
-        //    var promise = $http({
-        //        url: baseUrl+"tagBundle/UpdateExcludeList",
-        //        method: "POST",
-        //        data:
-        //       {
-        //           "Id": tagBundleId                 
-        //         , "ExcludeTags": exclTags
-        //       }
-        //    });
-
-        //    return promise;
-        //}
-        
+      
         var saveTagBundle = function (tagBundleId, topTags, exclTags, exclTagBundles) {
 
             var tagBundle =
@@ -390,7 +373,10 @@ tagBundleModule.controller("bookmarksCtrl", ['$scope', '$location', '$window', '
                                       var resolvePromise = function (promise, successFn) {
                                           Rx.Observable.fromPromise(promise)
                                                       .subscribe(successFn, function (err) {
-                                                          console.log('Error: %s', err);
+                                                          console.log('Error: %s, %s', err.status, err.statusText);
+                                                          if(err.status == 401){
+                                                              $scope.LoginRequired = true;
+                                                          }
                                                       }
                                                       , null);
                                       };
@@ -421,8 +407,7 @@ tagBundleModule.controller("bookmarksCtrl", ['$scope', '$location', '$window', '
 
     $http.defaults.headers.common = {};
     $http.defaults.headers.common["Content-Type"] = "application/json";
-    $http.defaults.headers.common['Authorization'] = 'dWthdGF5OmJvbGF2ZXJzb24=';
-
+    
     $http.defaults.headers.post = {};
     $http.defaults.headers.put = {};
     $http.defaults.headers.patch = {};

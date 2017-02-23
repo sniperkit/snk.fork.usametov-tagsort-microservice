@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">    
         <!-- Bootstrap -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/superhero/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/bootstrap-social.css" rel="stylesheet" />
     <link href="../../assets/styles.css" rel="stylesheet" />
     
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -15,10 +17,10 @@
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-    <script src="../../common/jquery-2.2.1.min.js"></script>            
+    <script src="../../common/jquery-2.2.1.min.js"></script>       
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>     
     <script src="../../common/angular.min.js"></script>
-    <script src="../../common/rx.lite.min.js"></script>    
-    <!--<script src="../../common/angular-clipboard.js"></script>-->
+    <script src="../../common/rx.lite.min.js"></script>        
     <script src="../app.js"></script>
     <script type="text/javascript">       
        var states_dict = new Map();
@@ -50,17 +52,49 @@
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                            
+                        <ul class="nav navbar-nav">                            
                             <li class="active"><a href="#?bookmarksCollectionId={{bookmarksCollectionId}}">Process Tags</a></li>
-                            <!--<li><a href="AssociatedTags.html">Process Associated Tags</a></li>-->                            
-                            <li><a href="addEditTagBundle.html#?bookmarksCollectionId={{bookmarksCollectionId}}">
+                            
+                            <li><a href="manageTagBundles.html#?bookmarksCollectionId={{bookmarksCollectionId}}">
                                     <span class="glyphicon glyphicon-plus"></span>
                                     Add/Edit Tag Bundle
                                 </a>
+                            </li>                            
+                        </ul>
+
+                        <ul class="nav navbar-nav navbar-right" ng-show="LoginRequired" style="font-size: 15px;">
+                            <li class="dropdown">
+
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Login to your dashboard &nbsp;&nbsp;&nbsp;<span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ><a style="font-size:medium;" href="/authentication/redirect/twitter" class="btn btn-block btn-social btn-twitter">
+                                            <span class="fa fa-twitter"></span> &nbsp;&nbsp;&nbsp;Sign in with Twitter 
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a style="font-size:medium;" href="/authentication/redirect/facebook" class="btn btn-block btn-social btn-facebook">
+                                            <span class="fa fa-facebook"></span> Sign in with Facebook
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a style="font-size:medium;" href="/authentication/redirect/google" class="btn btn-block btn-social btn-google">
+                                            <span class="fa fa-google"></span> Sign in with Google
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a style="font-size:medium;" href="/authentication/redirect/github" class="btn btn-block btn-social btn-github">
+                                            <span class="fa fa-github"></span> Sign in with Github
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
-                        
 
                     </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
