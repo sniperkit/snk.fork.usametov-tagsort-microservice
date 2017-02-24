@@ -9,6 +9,7 @@ using Nancy.Bootstrapper;
 using System.Threading.Tasks;
 using System;
 using System.IO;
+using Nancy.Diagnostics;
 
 namespace TagSortService
 {
@@ -51,7 +52,7 @@ namespace TagSortService
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
-            //Utils.SetupEnvironment();
+            //DiagnosticsHook.Disable(pipelines);
             base.ApplicationStartup(container, pipelines);
             SetCurrentUserWhenLoggedIn(pipelines);            
         }
@@ -73,6 +74,13 @@ namespace TagSortService
 
                 return null;
             };
+        }
+        /// <summary>
+        /// this is for debugging only
+        /// </summary>
+        protected override DiagnosticsConfiguration DiagnosticsConfiguration
+        {
+            get { return new DiagnosticsConfiguration { Password = @"ik.puk.tra.la.la" }; }
         }
     }
 }
