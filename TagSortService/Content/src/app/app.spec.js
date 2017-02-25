@@ -93,15 +93,15 @@ describe('TagBundleUtilTest', function () {
             expect(scope.GetBookmarksCollection()).toEqual('57e13f7e84e39a17d49bb198');
         });
 
-        it('should define selectedTagBundleId', function () {
+        //it('should define selectedTagBundleId', function () {
 
-            spyOn(location, 'search').and.returnValue({
-                'tagBundle': '580f053784e39a3724a7ad13',
-                'bookmarksCollectionId': '57e13f7e84e39a17d49bb198'
-            });
+        //    spyOn(location, 'search').and.returnValue({
+        //        'tagBundle': '580f053784e39a3724a7ad13',
+        //        'bookmarksCollectionId': '57e13f7e84e39a17d49bb198'
+        //    });
 
-            expect(scope.GetSlctdTagBundleId()).toEqual('580f053784e39a3724a7ad13');
-        });
+        //    expect(scope.GetSlctdTagBundleId()).toEqual('580f053784e39a3724a7ad13');
+        //});
         //end InitPage assertions
 
         //test moves here

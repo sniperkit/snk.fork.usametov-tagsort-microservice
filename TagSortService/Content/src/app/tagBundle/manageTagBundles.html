@@ -21,7 +21,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>     
     <script src="../../common/angular.min.js"></script>
     <script src="../../common/rx.lite.min.js"></script>
-    <!--<script src="../../common/angular-clipboard.js"></script>-->
+    <script src="../reducers/editTagBundle.js"></script>
     <script src="../app.js"></script>
 
 </head>
@@ -80,12 +80,7 @@
                                         <span class="fa fa-google"></span> Sign in with Google
                                     </a>
                                 </li>
-
-                                <!--<li>
-                                    <a style="font-size:medium;" href="/authentication/redirect/github" class="btn btn-block btn-social btn-github">
-                                        <span class="fa fa-github"></span> Sign in with Github
-                                    </a>
-                                </li>-->
+                                
                             </ul>
                         </li>
                     </ul>             
@@ -106,16 +101,16 @@
                         :: New Tag Bundle Name ::
                     </span>&nbsp;&nbsp;
                     <input type="text" id="tagBundleName" class="form-control" 
-                           ng-model="newTagBundleName" />  
+                           ng-model="state.newTagBundleName" />  
                 </div>
         
                 <div class="col-md-4">
                     <span class="label label-pill label-success">
                         :: Tag Bundles ::
                     </span>
-                    <select class="form-control" id="tagBundles" ng-model="selectedTagBundleId">                         
+                    <select class="form-control" id="tagBundles" ng-model="state.selectedTagBundleId">                         
                         <option value="new">New Tag Bundle</option>
-                        <option ng-repeat="tagBundle in existingTagBundles" value="{{tagBundle.id}}">{{tagBundle.name}}</option>
+                        <option ng-repeat="tagBundle in state.existingTagBundles" value="{{tagBundle.id}}">{{tagBundle.name}}</option>
                     </select>
                 </div>
                 
@@ -124,9 +119,9 @@
                         :: Bookmark Collections ::
                     </span>
                     <select class="form-control" id="bookmarkCollectionsSlct"
-                            ng-model="bookmarksCollectionId"
-                            ng-change="ReloadBookmarkCollection(bookmarksCollectionId)">
-                        <option ng-repeat="bc in bookmarkCollections" value="{{bc.id}}">{{bc.name}}</option>
+                            ng-model="state.bookmarksCollectionId"
+                            ng-change="ReloadBookmarkCollection(state.bookmarksCollectionId)">
+                        <option ng-repeat="bc in state.bookmarkCollections" value="{{bc.id}}">{{bc.name}}</option>
                     </select>
                 </div>
             </div>

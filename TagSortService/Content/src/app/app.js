@@ -1,71 +1,25 @@
 
-var tagBundleModule = angular.module("TagBundleUtil", []).controller
+const tagBundleModule = angular.module("TagBundleUtil", []).controller
     ("tagBundleCtrl", ['$scope', '$location', '$window', 'tagRepository'
     , function ($scope, $location, $window, tagRepository) {
-        
-        $scope.LoginRequired = true;
-        $scope.states_transition_matrix = {};
-        $scope.buffer_size = $scope.buffer_size ? $scope.buffer_size : 1000;
 
-        var tagMover = function (x) {
-            //src array and target array names are specified in states transition matrix
-            var src_trg_arr = $scope.states_transition_matrix.get(x.srcId)[x.keyCode];
-
-            $scope[src_trg_arr[1]] = getSafeArray($scope[src_trg_arr[1]]);
-            $scope[src_trg_arr[0]] = getSafeArray($scope[src_trg_arr[0]]);
-
-            var res = $scope.move($scope[src_trg_arr[0]], $scope[src_trg_arr[1]], x.slctValue);
-
-            $scope[src_trg_arr[0]] = res.arrSrc;
-            $scope[src_trg_arr[1]] = res.arrTrg;
-
+        const tagMover = function (x) {
+            console.log("state in tag mover",$scope.state);
+            $scope.state = editTagBundle($scope.state, Object.assign({ type: 'MOVE' }, x));
             $scope.$apply();
-
-            if (res.val2focus)
-                angular.element(x.srcId).val(res.val2focus.tag);
+            if ($scope.state.val2focus)
+                angular.element(x.srcId).val($scope.state.val2focus);
         };
-
-        var getSafeArray = function (arr) {
-            if (typeof arr === 'undefined')
-                return [];
-            else
-                return arr;
-        };
-
-        // move val from src array to target array returning next value in src array to focus
-        $scope.move = function (arrSrc, arrTrg, val) {
-
-            var nextVal2focus = getNextVal(arrSrc, val);
-            var newSrc = arrSrc.filter(t=> t.tag !== val);
-            var termCount = arrSrc.filter(t=> t.tag === val);
-            //and add it to target array            
-            arrTrg = termCount.concat(arrTrg);
-
-            return { arrSrc: newSrc, arrTrg: arrTrg, val2focus: nextVal2focus };
-        };
-
-        //get index of value in src array, then use this index to get next value
-        var getNextVal = function (arrSrc, term) {
-            var fndIdx = getIdx(arrSrc, term);
-            var result = fndIdx > 0 ? arrSrc[fndIdx - 1] :
-                    arrSrc.length > 1 ? arrSrc[fndIdx + 1] : null;
-
-            return result;
-        };
-
-        var getIdx = function (arrSrc, val) {
-            return arrSrc.findIndex(t=> t.tag === val);
-        };
-
+        
         //hook tagmover routine to element's keyup event 
-        var arrowKeyHandler = function (listIdSelector) {
-            var srcList = $(listIdSelector);
+        const arrowKeyHandler = function (listIdSelector) {
+            const srcList = $(listIdSelector);
 
-            var arrowKeyUp = Rx.Observable.fromEvent(srcList, 'keyup')
+            let arrowKeyUp = Rx.Observable.fromEvent(srcList, 'keyup')
                                           .filter(e=>e.keyCode === 37 || e.keyCode === 39)
-                                          .map(function (e) {
+                                          .map(function (e) {                                              
                                               return {
-                                                  keyCode: e.keyCode
+                                                  keyCode: e.keyCode.toString()
                                                   , srcId: listIdSelector
                                                   , slctValue: srcList.val()
                                               };
@@ -77,49 +31,50 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
         //state transitions are provided by $window service
         //keys in state transtions dictionary represent element ids (see select boxes below) 
         //to which we hook our keyup event handlers
-        $scope.SetStateTranstions = function () {
-            $scope.states_transition_matrix = $window.states_dict;
-            $scope.arrowKeySrcSelectors = Array.from($scope.states_transition_matrix.keys());
+        const setArrowKeyHandlers = function () {            
             //wire arrowKeyHandler to select boxes
-            angular.forEach($scope.arrowKeySrcSelectors, function (selector) { arrowKeyHandler(selector); });
+            angular.forEach(Array.from($scope.state.states_transition_matrix.keys())
+                                , function (selector) { arrowKeyHandler(selector); });
         };
 
         $scope.SaveTagBundleAndExcludeList = function () {
             resolvePromise(tagRepository.saveTagBundle
-                            ($scope.selectedTagBundleId,
-                             $scope.topTags,
-                             $scope.exclTags,
-                             $scope.exclTagBundles.split(','))
-                           , function (response) {
+                            ($scope.state.selectedTagBundleId,
+                             $scope.state.topTags,
+                             $scope.state.exclTags,
+                             $scope.state.exclTagBundles.split(','))
+                           ,
+                            function (response) {//
                                console.log("SaveTagBundleAndExcludeList, response status", response.status);
                            });
         };
            
     
         $scope.addEditTagBundleName = function () {
-            if (typeof $scope.selectedTagBundleId === 'undefined'
-                || $scope.selectedTagBundleId === 'new') {
+            if (typeof $scope.state.selectedTagBundleId === 'undefined'
+                || $scope.state.selectedTagBundleId === 'new') {
                 resolvePromise(tagRepository.createTagBundle
-                                            ($scope.newTagBundleName, $scope.bookmarksCollectionId)
+                                            ($scope.state.newTagBundleName, $scope.state.bookmarksCollectionId)
                                , function (response) {
                                    console.log("edit TagBundle Name, response status", response.status);
                                    $scope.ReloadPage();
                                });
             }
             else {
-                resolvePromise(tagRepository.saveTagBundleName($scope.selectedTagBundleId, $scope.newTagBundleName)
+                resolvePromise(tagRepository.saveTagBundleName($scope.state.selectedTagBundleId, $scope.state.newTagBundleName)
                                , function (response) {
                                    console.log("saveTagBundleName, response status", response.status);                                   
                                });
             }
         };
 
-        var resolvePromise = function (promise, successFn) {
+        const resolvePromise = function (promise, successFn) {
             Rx.Observable.fromPromise(promise)
                         .subscribe(successFn, function (err) {
                             console.log('Error: %s, %s', err.status, err.statusText);
                             if (err.status == 401) {
-                                $scope.LoginRequired = true;
+                                //TODO: call reducer here
+                                $scope.state.LoginRequired = true;
                             }
                         }
                         , null);
@@ -127,28 +82,25 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
 
         $scope.SetMostFrequentTags = function () {
 
-            var bundleId = $scope.GetSlctdTagBundleId($scope.selectedTagBundleId);
-            //console.log("$scope.exclTagBundles",$scope.exclTagBundles);
-
-            var promise = tagRepository.getMostFrequentTags(bundleId, $scope.exclTagBundles, $scope.buffer_size);
+            const bundleId = getSlctdTagBundleId($scope.state.selectedTagBundleId);            
+            let promise = tagRepository.getMostFrequentTags
+                                        (bundleId, $scope.state.exclTagBundles, $scope.state.buffer_size);
 
             resolvePromise(promise, function (response) {
-                $scope.freqTags = response.data;
-                //console.log("freq tags",response.data);
+                console.log("SetMostFrequentTags status", response.status);
+                $scope.state.freqTags = response.data;                
                 $scope.$apply();
             });
-
         };
    
         $scope.SetTagAssociations = function () {
 
-            var bundleId = $scope.GetSlctdTagBundleId($scope.selectedTagBundleId);
-            var promise = tagRepository.getTagAssociations(bundleId, $scope.buffer_size);
+            const bundleId = getSlctdTagBundleId($scope.state.selectedTagBundleId);
+            let promise = tagRepository.getTagAssociations(bundleId, $scope.state.buffer_size);
 
             resolvePromise(promise, function (response) {
-                //$scope.associatedTags = response.data;
-                $scope.freqTags = response.data;//using same array for associated terms
-                console.log("associated tags", response.data);
+                $scope.state.freqTags = response.data;//using same array for associated terms
+                //console.log("associated tags", response.data);
                 $scope.$apply();
             });
         };
@@ -168,11 +120,9 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
             $window.location.reload();
         };
 
-        $scope.GetSlctdTagBundleId = function (bundleId) {
+        const getSlctdTagBundleId = function (bundleId) {
 
-            return $location.search()['tagBundle']
-                                        ? $location.search()['tagBundle']
-                                        : bundleId;
+            return $location.search()['tagBundle'] || bundleId;
         };
 
         $scope.GetBookmarksCollection = function () {
@@ -188,19 +138,20 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
                 return;
             }
 
-            var promise = tagRepository.getTagBundles(bookmarksCollectionId);
+            $scope.state.bookmarksCollectionId = bookmarksCollectionId;
+
+            let promise = tagRepository.getTagBundles(bookmarksCollectionId);
 
             resolvePromise(promise, function (response) {
-                $scope.existingTagBundles = response.data;
-                //console.log("tag bundles", response.data);
-                var slctBundleId = $scope.GetSlctdTagBundleId(response.data ? response.data[0].id : null);
+
+                const slctBundleId = getSlctdTagBundleId(response.data ? response.data[0].id : null);                
+                $scope.state.existingTagBundles = response.data; //console.log("tag bundles", response.data);                
+                $scope.state.selectedTagBundleId = slctBundleId;                                
+                $scope.state.LoginRequired = false;
+
                 angular.forEach(funcArray, function (func) {
                     func(slctBundleId);
                 });
-
-                $scope.selectedTagBundleId = slctBundleId;
-                $scope.bookmarksCollectionId = bookmarksCollectionId;
-                $scope.LoginRequired = false;
 
                 $scope.$apply();
             });
@@ -208,22 +159,19 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
                 
         $scope.SetTagBundle = function (bundleId) {
 
-            var promise = tagRepository.getTagBundleById(bundleId);
+            let promise = tagRepository.getTagBundleById(bundleId);
 
             resolvePromise(promise, function (response) {
-                $scope.topTags = response.data.tags;
-                $scope.exclTags = response.data.excludeTags;
-                $scope.exclTagBundles = typeof response.data.excludeTagBundles !== 'undefined'
-                                              ? response.data.excludeTagBundles.join(',')
-                                              : '';
-
-                //console.log("scope", $scope);
+                
+                $scope.state = editTagBundle($scope.state, { type: 'SET_TAG_BUNDLE', data: response.data })//console.log("scope", $scope);
                 $scope.$apply();
             });
         };
                 
-        $scope.InitFreqTagsModel = function () {
-            $scope.SetStateTranstions();
+        $scope.InitFreqTagsModel = function () {            
+            $scope.state = editTagBundle($scope.state, { type: 'INIT_FREQ_TAGS_MODEL' });
+            setArrowKeyHandlers();
+
             $scope.InitPage
             ([
                 $scope.SetTagBundle
@@ -232,6 +180,7 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
         };
 
         $scope.InitAddEditTagBundle = function () {
+            $scope.state = editTagBundle({}, { type: 'INIT_ADD_EDIT_TAG_BUNDLE' });
             $scope.InitPage([]);
         };
 
@@ -246,12 +195,11 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
         $http.defaults.headers.put = {};
         $http.defaults.headers.patch = {};
 
-        var baseUrl = "http://localhost:55865/";
+        const baseUrl = "http://localhost:55865/";
         
-        var getTagBundleById = function (bundleId) {
-            //console.log("get tagBundleById", bundleId);
-
-            var promise = $http({
+        const getTagBundleById = function (bundleId) {
+            
+            let promise = $http({
                 url: baseUrl+"tagBundle/" + bundleId
                 , method: "GET"
                 , withCredentials: true
@@ -260,26 +208,25 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
             return promise;
         };
 
-        var getTagBundles = function (bookmarksCollectionId) {
+        const getTagBundles = function (bookmarksCollectionId) {
             
-            var promise = $http({
+            let promise = $http({
                 url: baseUrl+"tagBundleNames/"+(bookmarksCollectionId || "undefined"),
                 method: "GET"
-                //,headers: headers   
             });
 
             return promise;
         };
 
-        var getMostFrequentTags = function (bundleId, excludeTagBundleNames, bufferSize) {
+        const getMostFrequentTags = function (bundleId, excludeTagBundleNames, bufferSize) {
                             
-            var xTagBundles = excludeTagBundleNames || "undefined";             
-            var url = baseUrl+
+            const xTagBundles = excludeTagBundleNames || "undefined";
+            const url = baseUrl +
                     "NextMostFrequentTags/"+ bundleId +                    
                     "/" + bufferSize +
                     "/" + xTagBundles;
             
-            var promise = $http({
+            let promise = $http({
                 url: url,
                 method: "GET"
             });
@@ -287,8 +234,8 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
             return promise;                
         };
 
-        var getTagAssociations = function (tagBundleId, bufferSize) {
-            var promise = $http({
+        const getTagAssociations = function (tagBundleId, bufferSize) {
+            let promise = $http({
                 url: baseUrl + "AssociatedTerms/" + tagBundleId + "/" + bufferSize,
                 method: "GET"
             });
@@ -296,9 +243,9 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
             return promise;
         };
       
-        var saveTagBundle = function (tagBundleId, topTags, exclTags, exclTagBundles) {
+        const saveTagBundle = function (tagBundleId, topTags, exclTags, exclTagBundles) {
 
-            var tagBundle =
+            const tagBundle =
                    {
                        "Id": tagBundleId
                      , "Tags": topTags
@@ -308,7 +255,7 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
 
             //console.log('tagBundle to save', tagBundle);
 
-            var promise = $http({
+            let promise = $http({
                 url: baseUrl + "tagBundle/updateById",
                 method: "POST",
                 data: tagBundle
@@ -317,9 +264,9 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
             return promise;
         };
         
-        var createTagBundle = function (tagBundleName, bookmarksCollectionId) {
+        const createTagBundle = function (tagBundleName, bookmarksCollectionId) {
 
-            var tagBundle = {
+            const tagBundle = {
                 "Name": tagBundleName
                 ,
                 "BookmarksCollections": [bookmarksCollectionId]
@@ -327,7 +274,7 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
 
             console.log('tagBundle to create', tagBundle);
 
-            var promise = $http({
+            let promise = $http({
                 url: baseUrl + "tagBundle/create",
                 method: "POST",
                 data: tagBundle
@@ -336,15 +283,15 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
             return promise;
         };
 
-        var saveTagBundleName = function (bundleId, newTagBundleName) {
+        const saveTagBundleName = function (bundleId, newTagBundleName) {
 
-            var tagBundle = {
+            const tagBundle = {
                 "Name": newTagBundleName
                         ,
                 "Id": bundleId
             };
 
-            var promise = $http({
+            let promise = $http({
                 url: baseUrl + "tagBundle/editName",
                 method: "POST",
                 data: tagBundle
@@ -353,13 +300,12 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
             return promise;
         };
 
-        var tagService = {            
+        const tagService = {
             getTagBundleById: getTagBundleById,
             getTagBundles: getTagBundles,
             getMostFrequentTags: getMostFrequentTags,
             getTagAssociations: getTagAssociations,                        
             saveTagBundle: saveTagBundle,
-            //saveExcludeList: saveExcludeList,
             createTagBundle: createTagBundle,
             saveTagBundleName: saveTagBundleName
         };
@@ -370,33 +316,29 @@ var tagBundleModule = angular.module("TagBundleUtil", []).controller
 tagBundleModule.controller("bookmarksCtrl", ['$scope', '$location', '$window', 'bookmarkRepository'
                                   , function ($scope , $location  ,  $window ,  bookmarkRepository) {
 
-                                      var resolvePromise = function (promise, successFn) {
+                                      const resolvePromise = function (promise, successFn) {
                                           Rx.Observable.fromPromise(promise)
                                                       .subscribe(successFn, function (err) {
                                                           console.log('Error: %s, %s', err.status, err.statusText);
                                                           if(err.status == 401){
-                                                              $scope.LoginRequired = true;
+                                                              $scope.state.LoginRequired = true;
                                                           }
                                                       }
                                                       , null);
                                       };
 
-    var promise = bookmarkRepository.getBookmarkCollections();
+    let promise = bookmarkRepository.getBookmarkCollections();
 
     resolvePromise(promise, function (response) {
-        
-        $scope.bookmarkCollections = response.data;       
-        console.log("bookmarkCollections", response.data);       
 
-        $scope.bookmarksCollectionId = response.data[0].id;
-
+        $scope.state.bookmarkCollections = response.data;
+        //console.log("bookmarkCollections", response.data);   
+        $scope.state.bookmarksCollectionId = response.data[0].id;
         $scope.$apply();
     });
 
     $scope.ReloadBookmarkCollection = function (bookmarksCollectionId) {
-
-        console.log("bookmarksCollectionId", bookmarksCollectionId);
-
+        //console.log("bookmarksCollectionId", bookmarksCollectionId);
         if (bookmarksCollectionId) {
             $location.search({ bookmarksCollectionId: bookmarksCollectionId });
             $window.location.reload();
@@ -412,11 +354,11 @@ tagBundleModule.controller("bookmarksCtrl", ['$scope', '$location', '$window', '
     $http.defaults.headers.put = {};
     $http.defaults.headers.patch = {};
 
-    var baseUrl = "http://localhost:55865/";
+    const baseUrl = "http://localhost:55865/";
 
-    var getBookmarkCollections = function () {
+    const getBookmarkCollections = function () {
 
-        var promise = $http({
+        let promise = $http({
             url: baseUrl + "bookmarkCollections/",
             method: "GET"
         });
@@ -424,7 +366,7 @@ tagBundleModule.controller("bookmarksCtrl", ['$scope', '$location', '$window', '
         return promise;
     };
 
-    var bookmarkService = {
+    const bookmarkService = {
         getBookmarkCollections: getBookmarkCollections
     };
 

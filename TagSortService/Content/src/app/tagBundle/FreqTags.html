@@ -21,15 +21,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>     
     <script src="../../common/angular.min.js"></script>
     <script src="../../common/rx.lite.min.js"></script>        
+    <script src="../reducers/editTagBundle.js"></script>
     <script src="../app.js"></script>
-    <script type="text/javascript">       
-       var states_dict = new Map();
-        //set states transition table in $window service, it will be used inside SetStateTranstions
-       states_dict.set('#tagBundleList', { "39": ["topTags", "freqTags"] });
-       states_dict.set('#freqTagsList', { '37': ["freqTags", "topTags"], '39': ["freqTags", "exclTags"] });
-       states_dict.set('#excludeTagsList', { '37': ["exclTags", "freqTags"] });       
-    </script>
-
+    
 </head>
     <body ng-controller="tagBundleCtrl" ng-init='InitFreqTagsModel()'>
         
@@ -45,7 +39,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#?bookmarksCollectionId={{bookmarksCollectionId}}">
+                        <a class="navbar-brand" href="#?bookmarksCollectionId={{state.bookmarksCollectionId}}">
                             <span class="glyphicon glyphicon-tags"></span>
                             &nbsp;Tag Bundle Util
                         </a>
@@ -53,16 +47,16 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">                            
-                            <li class="active"><a href="#?bookmarksCollectionId={{bookmarksCollectionId}}">Process Tags</a></li>
+                            <li class="active"><a href="#?bookmarksCollectionId={{state.bookmarksCollectionId}}">Process Tags</a></li>
                             
-                            <li><a href="manageTagBundles.html#?bookmarksCollectionId={{bookmarksCollectionId}}">
+                            <li><a href="manageTagBundles.html#?bookmarksCollectionId={{state.bookmarksCollectionId}}">
                                     <span class="glyphicon glyphicon-plus"></span>
                                     Add/Edit Tag Bundle
                                 </a>
                             </li>                            
                         </ul>
 
-                        <ul class="nav navbar-nav navbar-right" ng-show="LoginRequired" style="font-size: 15px;">
+                        <ul class="nav navbar-nav navbar-right" ng-show="state.LoginRequired" style="font-size: 15px;">
                             <li class="dropdown">
 
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -75,21 +69,15 @@
                                         </a>
                                     </li>
                                     
-                                    <!--<li>
+                                    <li>
                                         <a style="font-size:medium;" href="/authentication/redirect/facebook" class="btn btn-block btn-social btn-facebook">
                                             <span class="fa fa-facebook"></span> Sign in with Facebook
                                         </a>
                                     </li>
-                                    
+
                                     <li>
                                         <a style="font-size:medium;" href="/authentication/redirect/google" class="btn btn-block btn-social btn-google">
                                             <span class="fa fa-google"></span> Sign in with Google
-                                        </a>
-                                    </li>-->
-                                    
-                                    <li>
-                                        <a style="font-size:medium;" href="/authentication/redirect/github" class="btn btn-block btn-social btn-github">
-                                            <span class="fa fa-github"></span> Sign in with Github
                                         </a>
                                     </li>
                                 </ul>
@@ -115,8 +103,8 @@
                         <span class="label label-pill label-success">
                             :: Select existing tag bundle ::
                         </span>
-                        <select class="form-control" id="tagBundles" ng-model="selectedTagBundleId" ng-change="ReloadPage(selectedTagBundleId)">
-                            <option ng-repeat="tagBundle in existingTagBundles" value="{{tagBundle.id}}">{{tagBundle.name}}</option>
+                        <select class="form-control" id="tagBundles" ng-model="state.selectedTagBundleId" ng-change="ReloadPage(state.selectedTagBundleId)">
+                            <option ng-repeat="tagBundle in state.existingTagBundles" value="{{tagBundle.id}}">{{tagBundle.name}}</option>
                         </select>
 
                     </div>
@@ -127,7 +115,7 @@
                         <span class="label label-pill label-success">
                             :: Top Tags (Buffer Size)::
                         </span>&nbsp;&nbsp;
-                        <input type="text" class="form-control" id="_buffer_size" ng-model="buffer_size" />
+                        <input type="text" class="form-control" id="_buffer_size" ng-model="state.buffer_size" />
                     </div>
                     <div class="col-md-1"></div>
                 </div>
@@ -138,7 +126,7 @@
                         <span class="label label-pill label-success">
                             :: Exclude Tag Bundles ::
                         </span>&nbsp;&nbsp;
-                        <textarea class="form-control" id="exclTagBundlesTxt" rows="2" ng-model="exclTagBundles"></textarea>
+                        <textarea class="form-control" id="exclTagBundlesTxt" rows="2" ng-model="state.exclTagBundles"></textarea>
                     </div>
                     <div class="col-md-1"></div>
                 </div>
@@ -155,7 +143,7 @@
                             </span>
                         </h4>
                         <select id="tagBundleList" class="form-control" size="20" >
-                            <option ng-repeat="tag in topTags" value="{{tag.tag}}">{{tag.tag}} ({{tag.count}})</option>
+                            <option ng-repeat="tag in state.topTags" value="{{tag.tag}}">{{tag.tag}} ({{tag.count}})</option>
                         </select>
                     </div>
                 </div>
@@ -169,7 +157,7 @@
                             </span>
                         </h4>
                         <select id="freqTagsList" class="form-control" size="20">
-                            <option ng-repeat="tag in freqTags" value="{{tag.tag}}">{{tag.tag}} ({{tag.count}})</option>
+                            <option ng-repeat="tag in state.freqTags" value="{{tag.tag}}">{{tag.tag}} ({{tag.count}})</option>
                         </select>
                     </div>
                     <div class="col-lg-1"></div>
@@ -184,7 +172,7 @@
                             </span>
                         </h4>
                         <select id="excludeTagsList" class="form-control" size="20">
-                            <option ng-repeat="tag in exclTags" value="{{tag.tag}}">{{tag.tag}} ({{tag.count}})</option>
+                            <option ng-repeat="tag in state.exclTags" value="{{tag.tag}}">{{tag.tag}} ({{tag.count}})</option>
                         </select>
                     </div>
                     <div class="col-lg-1"></div>
