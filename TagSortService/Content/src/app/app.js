@@ -1,7 +1,7 @@
 
-const tagBundleModule = angular.module("TagBundleUtil", []).controller
-    ("tagBundleCtrl", ['$scope', '$location', '$window', 'tagRepository'
-    , function ($scope, $location, $window, tagRepository) {
+const tagBundleModule = angular.module("TagBundleUtil", ['angular-loading-bar']).controller
+    ("tagBundleCtrl", ['$scope', '$location', '$window', 'tagRepository', 'cfpLoadingBar'
+    , function ($scope, $location, $window, tagRepository, cfpLoadingBar) {
 
         const tagMover = function (x) {
             console.log("state in tag mover",$scope.state);
@@ -72,8 +72,7 @@ const tagBundleModule = angular.module("TagBundleUtil", []).controller
             Rx.Observable.fromPromise(promise)
                         .subscribe(successFn, function (err) {
                             console.log('Error: %s, %s', err.status, err.statusText);
-                            if (err.status == 401) {
-                                //TODO: call reducer here
+                            if (err.status == 401) {                                
                                 $scope.state.LoginRequired = true;
                             }
                         }
@@ -85,11 +84,11 @@ const tagBundleModule = angular.module("TagBundleUtil", []).controller
             const bundleId = getSlctdTagBundleId($scope.state.selectedTagBundleId);            
             let promise = tagRepository.getMostFrequentTags
                                         (bundleId, $scope.state.exclTagBundles, $scope.state.buffer_size);
-
+                        
             resolvePromise(promise, function (response) {
                 console.log("SetMostFrequentTags status", response.status);
                 $scope.state.freqTags = response.data;                
-                $scope.$apply();
+                $scope.$apply();                
             });
         };
    

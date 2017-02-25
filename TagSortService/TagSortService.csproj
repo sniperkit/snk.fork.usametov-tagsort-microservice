@@ -121,6 +121,7 @@
   <ItemGroup>
     <Content Include="Content\src\app\reducers\editTagBundle.js" />
     <Content Include="Content\src\assets\bootstrap-social.css" />
+    <Content Include="Content\src\assets\loading-bar-min.css" />
     <Content Include="favicon.ico" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
