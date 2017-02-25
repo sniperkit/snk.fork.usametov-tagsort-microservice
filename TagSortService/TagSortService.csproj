@@ -119,7 +119,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\src\app\reducers\editTagBundle.js" />
     <Content Include="Content\src\assets\bootstrap-social.css" />
+    <Content Include="favicon.ico" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -142,10 +144,7 @@
     <Content Include="Content\src\app\app.js" />
     <Content Include="Content\src\app\app.spec.js" />
     <Content Include="Content\src\app\tagBundle\manageTagBundles.html" />
-    <Content Include="Content\src\app\tagBundle\AssociatedTags-deprecated.html" />
     <Content Include="Content\src\app\tagBundle\FreqTags.html" />
-    <Content Include="Content\src\app\tagBundle\index.html" />
-    <Content Include="Content\src\app\tagBundle\manageBookmarks.html" />
     <Content Include="Content\src\assets\bootstrap.min.css" />
     <Content Include="Content\src\assets\styles.css" />
     <Content Include="Content\src\common\angular-clipboard.js" />
@@ -178,6 +177,7 @@
       <Name>Bookmarks.Mongo.Data</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
