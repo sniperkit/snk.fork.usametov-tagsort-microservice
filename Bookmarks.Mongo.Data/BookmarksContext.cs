@@ -448,7 +448,7 @@ namespace Bookmarks.Mongo.Data
 
         private string[] CompileExcludeTags(string[] excludeTagBundles)
         {
-            var exclTags = excludeTagBundles.SelectMany(ext => GetTagBundles(ext))
+            var exclTags = excludeTagBundles.SelectMany(ext => GetTagBundles(ext.ToLower()))
                                            .SelectMany(b => b.Tags).ToArray();
             return exclTags;
         }
