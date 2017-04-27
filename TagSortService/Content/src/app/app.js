@@ -27,10 +27,7 @@ const tagBundleModule = angular.module("TagBundleUtil", ['angular-loading-bar'])
 
             arrowKeyUp.subscribe(tagMover);
         };
-           
-        //state transitions are provided by $window service
-        //keys in state transtions dictionary represent element ids (see select boxes below) 
-        //to which we hook our keyup event handlers
+        
         const setArrowKeyHandlers = function () {            
             //wire arrowKeyHandler to select boxes
             angular.forEach(Array.from($scope.state.states_transition_matrix.keys())

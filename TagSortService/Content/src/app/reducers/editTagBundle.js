@@ -1,8 +1,10 @@
-﻿const get_states_transitions = () => {
+﻿//keys in state transtions dictionary represent element ids (see select boxes below) 
+//to which we hook our keyup event handlers
+const get_states_transitions = () => {
         let states_dict = new Map();
-        states_dict.set('#tagBundleList', { '39' : ["topTags", "freqTags"] });
-        states_dict.set('#freqTagsList', { '37' : ["freqTags", "topTags"], '39' : ["freqTags", "exclTags"] });
-        states_dict.set('#excludeTagsList', { '37' : ["exclTags", "freqTags"] })
+        states_dict.set('#tagBundleList', {/*right arrow pressed*/'39': ["topTags", "freqTags"] });
+        states_dict.set('#freqTagsList', { /*left arrow pressed*/ '37': ["freqTags", "topTags"], '39': ["freqTags", "exclTags"] });
+        states_dict.set('#excludeTagsList',{/*left arrow pressed*/ '37': ["exclTags", "freqTags"] })
         return states_dict;
 }
 
@@ -26,7 +28,8 @@ const editTagBundle = (state, action) => {
         case 'MOVE':
             //src array and target array names are specified in states transition matrix
             let sourceArrayRef = state.states_transition_matrix.get(action.srcId)[action.keyCode][0];
-            let targetArrayRef = state.states_transition_matrix.get(action.srcId)[action.keyCode][1]; 
+            let targetArrayRef = state.states_transition_matrix.get(action.srcId)[action.keyCode][1];
+            //move tag from source array to target array on (left or right arrow) key press
             let res = move(state[sourceArrayRef], state[targetArrayRef], action.slctValue);
 
             state[sourceArrayRef] = res.arrSrc;

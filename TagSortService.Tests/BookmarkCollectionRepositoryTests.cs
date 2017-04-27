@@ -22,9 +22,9 @@ namespace TagSortService.Tests
         {
             var sut = new Browser(new BookmarksBootstrapper());
 
-            var actual = sut.Get("/bookmarksByTagBundle/recycling/0/3000/");
-
-            Assert.True(actual.Body.DeserializeJson<Bookmark[]>().Length > 0);
+            var actual = sut.Get("/bookmarksByTagBundle/recycling/0/10/");
+            var bookmarks = actual.Body.DeserializeJson<Bookmark[]>();
+            Assert.True(bookmarks.Length > 0);
         }
     }
 }
