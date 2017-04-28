@@ -1,5 +1,6 @@
-Why MiGG?
-MiGG is a minified, lightweight reincarnation of [KiGG](http://kigg.codeplex.com/)
+**Why MiGG?**
+
+MiGG is a minified, lightweight reincarnation of [KiGG](http://kigg.codeplex.com/).
 Back then, in 2009, KiGG was the only content aggregator ever written in C#.
 
 A lot has changed in web since then:
