@@ -1,6 +1,7 @@
 **Why MiGG?**
 
 MiGG is a minified, lightweight reincarnation of [KiGG](http://kigg.codeplex.com/).
+
 Back then, in 2009, KiGG was the only content aggregator ever written in C#.
 
 A lot has changed in web since then:
@@ -11,6 +12,7 @@ A lot has changed in web since then:
 * machine-learning tools have become much more approachable than before
 
 With all that above why not re-animate KiGG?
+
 The KiGG has died, long live the MiGG !
 
 
