@@ -6,7 +6,10 @@ This has also number of other use cases such as:
 * building training data set for text mining (machine learning) projects
 * better UI functionality for search engines (like facets, etc.)
 
-This project is bundled with [Bookmarks-ETL](https://github.com/usametov/Bookmarks-ETL), which is another project of mine.
+This project has a few "friend" projects:
+* [Bookmarks-ETL](https://github.com/usametov/Bookmarks-ETL), which is another project of mine.
+* [MiGG](https://github.com/usametov/tagsort-microservice/tree/master/TagSortService/MiGG)
+* [Gitmarks](https://github.com/usametov/gitmarks)
 
 Some of the solutions dependencies:
 * NancyFX (from Nuget)

@@ -52,3 +52,4 @@ C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\bin\Debug\MongoDB.Driver.Cor
 C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\bin\Debug\MongoDB.Driver.dll
 C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
 C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\bin\Debug\MongoDB.Driver.Core.xml
+C:\code\csharp6\TagSortService\Bookmarks.Mongo.Data\bin\Debug\Bookmarks.Mongo.Data.dll.config
