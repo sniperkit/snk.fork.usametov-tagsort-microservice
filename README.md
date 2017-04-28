@@ -7,8 +7,8 @@ This has also number of other use cases such as:
 * better UI functionality for search engines (like facets, etc.)
 
 This project has a few "friend" projects:
-* [Bookmarks-ETL](https://github.com/usametov/Bookmarks-ETL), which is another project of mine.
-* [MiGG](https://github.com/usametov/tagsort-microservice/tree/master/TagSortService/MiGG)
+* [Bookmarks-ETL](https://github.com/usametov/Bookmarks-ETL)
+* [MiGG](https://github.com/usametov/tagsort-microservice/tree/master/TagSortService/MiGG) 
 * [Gitmarks](https://github.com/usametov/gitmarks)
 
 Some of the solutions dependencies:
