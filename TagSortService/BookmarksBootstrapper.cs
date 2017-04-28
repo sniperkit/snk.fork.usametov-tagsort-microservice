@@ -101,11 +101,25 @@ namespace TagSortService
         protected override void ConfigureConventions(NancyConventions nancyConventions)
         {
             base.ConfigureConventions(nancyConventions);
+            
+            nancyConventions.StaticContentsConventions.Add
+                (StaticContentConventionBuilder.AddFile("/bookmarks/recycling", "MiGG/build/index.html"));
 
             nancyConventions.StaticContentsConventions.Add
-                (StaticContentConventionBuilder.AddDirectory("bookmarks", "MiGG"));
+                (StaticContentConventionBuilder.AddFile("/bookmarks/life-style", "MiGG/build/index.html"));
 
+            nancyConventions.StaticContentsConventions.Add
+                (StaticContentConventionBuilder.AddFile("/bookmarks/kids", "MiGG/build/index.html"));
+
+            nancyConventions.StaticContentsConventions.Add
+                (StaticContentConventionBuilder.AddFile("/bookmarks", "MiGG/build/index.html"));
+
+            nancyConventions.StaticContentsConventions.Add
+                (StaticContentConventionBuilder.AddFile("/bookmarks/", "MiGG/build/index.html"));
+
+            nancyConventions.StaticContentsConventions.Add
+                (StaticContentConventionBuilder.AddDirectory("/bookmarks", "MiGG"));
         }
-        
+
     }
 }

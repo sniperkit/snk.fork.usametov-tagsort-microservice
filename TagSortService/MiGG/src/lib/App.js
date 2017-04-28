@@ -50,14 +50,16 @@ class App extends React.Component {
         <div style={style.title}>
           <h1>.:|:. Migg Content Aggregator</h1>
           {/* TODO: add menu and routes */}
-          <NavLink to="/recycling" activeStyle={{ color: 'green' }}>Recycling</NavLink>{' '}
-          <NavLink to="/life-style" activeStyle={{ color: 'green' }}>Life Style</NavLink>{' '}
-          <NavLink to="/kids" activeStyle={{ color: 'green' }}>Kids</NavLink>{' '}
+          <NavLink to="/bookmarks/recycling" activeStyle={{ color: 'green' }}>Recycling</NavLink>{' '}
+          <NavLink to="/bookmarks/life-style" activeStyle={{ color: 'green' }}>Life Style</NavLink>{' '}
+          <NavLink to="/bookmarks/kids" activeStyle={{ color: 'green' }}>Kids</NavLink>{' '}
         </div>        
-        <div style={style.bookmarks}>          
-          <Route path="/recycling" component={() => (<BookmarkList url={this.getBookmarksUrl("recycling",0,10)} />) } />
-          <Route path="/life-style" component={() => (<BookmarkList url={this.getBookmarksUrl("life-style",0,10)} />) } />
-          <Route path="/kids" component={() => (<BookmarkList url={this.getBookmarksUrl("kids",0,10)} />) } />
+        <div style={style.bookmarks}>                    
+          <Route path="/bookmarks/recycling" component={() => (<BookmarkList url={this.getBookmarksUrl("recycling",0,10)} />) } />
+          <Route path="/bookmarks/life-style" component={() => (<BookmarkList url={this.getBookmarksUrl("life-style",0,10)} />) } />
+          <Route path="/bookmarks/kids" component={() => (<BookmarkList url={this.getBookmarksUrl("kids",0,10)} />) } />
+          <Route path="/bookmarks/" component={() => (<BookmarkList url={this.getBookmarksUrl("recycling",0,10)} />) } />
+          <Route path="/bookmarks" component={() => (<BookmarkList url={this.getBookmarksUrl("recycling",0,10)} />) } />
         </div>
          <div style={style.side_bar}>
           side bar goes here
