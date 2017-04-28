@@ -103,7 +103,8 @@ namespace TagSortService
             base.ConfigureConventions(nancyConventions);
 
             nancyConventions.StaticContentsConventions.Add
-                (StaticContentConventionBuilder.AddDirectory("bookmarks", @"MiGG"));
+                (StaticContentConventionBuilder.AddDirectory("bookmarks", "MiGG"));
+
         }
         
     }

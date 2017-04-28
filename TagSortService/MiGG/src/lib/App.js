@@ -27,7 +27,7 @@ const style = {
 
   },
   bookmarks: {
-    flexBasis: 900,
+    flexBasis: 600,
     alignSelf: 'center',
   },
   side_bar: {

@@ -12,11 +12,11 @@ export default class BookmarkList extends React.Component{
     }
     
     componentDidMount() {      
-        bookmarksService(this.props.url)
+        bookmarksService.fetchBookmarks(this.props.url)                  
                   .then((bookmarks) => 
                       { 
-                        this.setState({ bookmarks }); 
-                        //console.log("logging bookmarks!", bookmarks);
+                          console.log("logging bookmarks!", bookmarks);
+                          this.setState({ bookmarks });                         
                       });
     }
     
