@@ -13,7 +13,7 @@ A lot has changed in web since then:
 
 With all that above why not re-animate KiGG?
 
-The KiGG has died, long live the MiGG !
+The KiGG is dead, long live the MiGG !
 
 
 
