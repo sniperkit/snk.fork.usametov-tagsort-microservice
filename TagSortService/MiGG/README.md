@@ -10,5 +10,9 @@ A lot has changed in web since then:
 * we can unload heavy background jobs from web server to hadoop/spark/storm... 
 * machine-learning tools have become much more approachable than before
 
+With all that above why not re-animate KiGG?
+The KiGG has died, long live the MiGG !
+
+
 
 
