@@ -5,4 +5,7 @@ TagSortService.Tests/bin/
 Bookmarks.Mongo.Data/bin/
 node_modules/
 .vs/
-Bookmarks.Mongo.Data/bin/Release/
+Bookmarks.Mongo.Data/obj/
+TagSortService.Tests/obj/
+TagSortService.Tests/packages.config
+TagSortService/packages.config
