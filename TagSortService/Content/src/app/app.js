@@ -69,7 +69,7 @@ const tagBundleModule = angular.module("TagBundleUtil", ['angular-loading-bar'])
             Rx.Observable.fromPromise(promise)
                         .subscribe(successFn, function (err) {
                             console.log('Error: %s, %s', err.status, err.statusText);
-                            if (err.status == 401) {                                
+                            if (err.status === 401) {                                
                                 $scope.state.LoginRequired = true;
                             }
                         }
@@ -159,7 +159,7 @@ const tagBundleModule = angular.module("TagBundleUtil", ['angular-loading-bar'])
 
             resolvePromise(promise, function (response) {
                 
-                $scope.state = editTagBundle($scope.state, { type: 'SET_TAG_BUNDLE', data: response.data })//console.log("scope", $scope);
+                $scope.state = editTagBundle($scope.state, { type: 'SET_TAG_BUNDLE', data: response.data });//console.log("scope", $scope);
                 $scope.$apply();
             });
         };
@@ -316,7 +316,7 @@ tagBundleModule.controller("bookmarksCtrl", ['$scope', '$location', '$window', '
                                           Rx.Observable.fromPromise(promise)
                                                       .subscribe(successFn, function (err) {
                                                           console.log('Error: %s, %s', err.status, err.statusText);
-                                                          if(err.status == 401){
+                                                          if(err.status === 401){
                                                               $scope.state.LoginRequired = true;
                                                           }
                                                       }

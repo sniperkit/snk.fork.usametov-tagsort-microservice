@@ -15,7 +15,7 @@ export default class BookmarkList extends React.Component{
         bookmarksService.fetchBookmarks(this.props.url)                  
                   .then((bookmarks) => 
                       { 
-                          console.log("logging bookmarks!", bookmarks);
+                          //console.log("logging bookmarks!", bookmarks);
                           this.setState({ bookmarks });                         
                       });
     }

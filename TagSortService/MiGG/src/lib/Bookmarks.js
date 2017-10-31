@@ -10,7 +10,7 @@ const style = {
 };
 
 export default function Bookmarks(props) {
-  console.log(props);
+  //console.log(props);
   
   return (    
     <div style={style} >

@@ -48,8 +48,7 @@ class App extends React.Component {
       <Router>
       <div style={style.root}>
         <div style={style.title}>
-          <h1>.:|:. Migg Content Aggregator</h1>
-          {/* TODO: add menu and routes */}
+          <h1>.:|:. MiGG Content Aggregator</h1>          
           <NavLink to="/bookmarks/recycling" activeStyle={{ color: 'green' }}>Recycling</NavLink>{' '}
           <NavLink to="/bookmarks/life-style" activeStyle={{ color: 'green' }}>Life Style</NavLink>{' '}
           <NavLink to="/bookmarks/kids" activeStyle={{ color: 'green' }}>Kids</NavLink>{' '}
