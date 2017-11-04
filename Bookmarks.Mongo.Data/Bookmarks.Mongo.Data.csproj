@@ -72,6 +72,7 @@
     <Compile Include="TagBundle.cs" />
     <Compile Include="TagCount.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="UserContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -16,7 +16,7 @@ namespace Bookmarks.Mongo.Data
     {
         public const string DEFAULT_BOOKMARKS_COLLECTION = "bookmarks";
         public const string BOOKMARKS_COLLECTIONS = "bookmarks_collections";
-        public const string USERS_COLLECTION = "users";
+        
         private const string DEFAULT_BOOKMARK_DB = "astanova-bookmarks";
         public const int TAG_COUNTS_PAGE_SIZE = 1000;
         private const string TAG_BUNDLES_COLLECTION = "tagBundles";
@@ -75,8 +75,7 @@ namespace Bookmarks.Mongo.Data
 
                 cfg.CreateMap<Bookmarks.Mongo.Data.BookmarksCollections, Bookmarks.Common.BookmarksCollections>();
                 cfg.CreateMap<Bookmarks.Mongo.Data.TagCount, Bookmarks.Common.TagCount>();
-                cfg.CreateMap<Bookmarks.Mongo.Data.Bookmark, Bookmarks.Common.Bookmark>();
-                cfg.CreateMap<Bookmarks.Mongo.Data.User, Bookmarks.Common.User>();
+                cfg.CreateMap<Bookmarks.Mongo.Data.Bookmark, Bookmarks.Common.Bookmark>();                
             });                            
 
             MapperObj = config.CreateMapper();       
@@ -498,16 +497,7 @@ namespace Bookmarks.Mongo.Data
             var bookmarks = _database.GetCollection<Bookmarks.Mongo.Data.Bookmark>(BookmarksCollection);
             return bookmarks.Find(filterDef).Skip(skip).Limit(take);
         }
-
-        public Bookmarks.Common.User GetUserByUsername(string userName)
-        {
-
-            var users = _database.GetCollection<Bookmarks.Mongo.Data.User>(USERS_COLLECTION);
-
-            return MapperObj.Map<Bookmarks.Common.User>
-                (users.Find(u => u.Name == userName /*&& u.PasswordHash == passwordHash*/).FirstOrDefault());
-        }
-
+                
         public IEnumerable<Bookmarks.Common.BookmarksCollections> GetBookmarksCollections()
         {
             var bookmarksCollections = _database.GetCollection

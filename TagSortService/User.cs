@@ -8,9 +8,7 @@ namespace TagSortService
         public string Id { get; set; }
                 
         public string Email { get; set; }
-
-        public string PasswordHash { get; set; }
-
+        
         public string UserName
         {
             get; set;
@@ -18,7 +16,7 @@ namespace TagSortService
 
         public IEnumerable<string> Claims
         {
-            get; private set;
+            get; set;
         }
     }
 }

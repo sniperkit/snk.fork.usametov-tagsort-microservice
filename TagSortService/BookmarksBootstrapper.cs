@@ -1,16 +1,13 @@
 ﻿using Bookmarks.Common;
 using Nancy;
-using Nancy.SimpleAuthentication;
 using Nancy.TinyIoc;
-using SimpleAuthentication.Core;
-using SimpleAuthentication.Core.Providers;
-using System.Reflection;
 using Nancy.Bootstrapper;
 using System.Threading.Tasks;
 using System;
-using System.IO;
 using Nancy.Diagnostics;
 using Nancy.Conventions;
+using Nancy.Authentication.Stateless;
+using Jose;
 
 namespace TagSortService
 {
@@ -30,52 +27,17 @@ namespace TagSortService
 
             var context = new Bookmarks.Mongo.Data.BookmarksContext(ConnectionString);
             container.Register<IBookmarksContext>(context);
-
-            var twitterProvider = new TwitterProvider(new ProviderParams { PublicApiKey = Utils.GetAppSetting("TwitterConsumerKey"), SecretApiKey = Utils.GetAppSetting("TwitterConsumerSecret") });
-            var facebookProvider = new FacebookProvider(new ProviderParams { PublicApiKey = Utils.GetAppSetting("FBClientId"), SecretApiKey = Utils.GetAppSetting("FBClientSecret") });
-            var googleProvider = new GoogleProvider(new ProviderParams { PublicApiKey = Utils.GetAppSetting("GoogleConsumerKey"), SecretApiKey = Utils.GetAppSetting("GoogleConsumerSecret") });
-
-            var authenticationProviderFactory = new AuthenticationProviderFactory();
-
-            try
-            {
-                authenticationProviderFactory.AddProvider(twitterProvider);
-                authenticationProviderFactory.AddProvider(facebookProvider);
-                authenticationProviderFactory.AddProvider(googleProvider);
-            }
-            catch (ReflectionTypeLoadException ex)
-            {
-                var loaderEx = ex.LoaderExceptions;
-            }
-            
-            container.Register<IAuthenticationCallbackProvider>(new SocialAuthenticationCallbackProvider(context));
+            container.Register<ITokenizer>(new JwtTokenizer());
+            //TODO: add IUserRepository
         }
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             //DiagnosticsHook.Disable(pipelines);
             base.ApplicationStartup(container, pipelines);
-            SetCurrentUserWhenLoggedIn(pipelines);            
+            //SetCurrentUserWhenLoggedIn(pipelines);            
         }
-
-        private static void SetCurrentUserWhenLoggedIn(IPipelines pipelines)
-        {
-            pipelines.BeforeRequest += async (nancyContext, ct) =>
-            {
-                await Task.Run(() => 
-                {                    
-                    if (nancyContext.Request.Cookies.ContainsKey(Utils.SESSION_KEY))
-                        nancyContext.CurrentUser = new TokenService()
-                                                      .GetUserFromToken
-                                                        (nancyContext.Request.Cookies[Utils.SESSION_KEY]);
-                    else
-                        nancyContext.CurrentUser = null;
-
-                });
-
-                return null;
-            };
-        }
+                
         /// <summary>
         /// this is for debugging only
         /// </summary>
@@ -86,8 +48,33 @@ namespace TagSortService
 
         protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
         {
-            base.RequestStartup(container, pipelines, context);
+            var secretKey = Utils.GetAppSetting("FBClientSecret");//TODO: cache it 
+                      
+            var configuration =
+                new StatelessAuthenticationConfiguration(nancyContext =>
+                {
+                    var jwtToken = nancyContext.Request.Headers.Authorization;
 
+                    try
+                    {
+                        var payload = JWT.Decode<TokenPayload>(jwtToken, secretKey, 
+                            JweAlgorithm.A256GCMKW, JweEncryption.A256CBC_HS512);
+
+                        if (payload.Expires > DateTime.UtcNow)
+                        {                            
+                            return new User { UserName = payload.UserName, Claims = payload.Claims };
+                        }
+
+                        return null;
+
+
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }                    
+                });
+            
             pipelines.AfterRequest.AddItemToEndOfPipeline(async (ctx, ct) => {
                 await Task.Run(()=>
                 {
@@ -96,6 +83,8 @@ namespace TagSortService
                                 .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type");
                 });
             });
+
+            StatelessAuthentication.Enable(pipelines, configuration);
         }
 
         protected override void ConfigureConventions(NancyConventions nancyConventions)
@@ -103,22 +92,17 @@ namespace TagSortService
             base.ConfigureConventions(nancyConventions);
             
             nancyConventions.StaticContentsConventions.Add
-                (StaticContentConventionBuilder.AddFile("/bookmarks/recycling", "MiGG/build/index.html"));
+                (StaticContentConventionBuilder.AddFile("/bookmarks/security", "../../javascript/MiGG-ng2/"));
 
             nancyConventions.StaticContentsConventions.Add
-                (StaticContentConventionBuilder.AddFile("/bookmarks/life-style", "MiGG/build/index.html"));
+                (StaticContentConventionBuilder.AddFile("/bookmarks/cryptography", "../../javascript/MiGG-ng2/"));
 
             nancyConventions.StaticContentsConventions.Add
-                (StaticContentConventionBuilder.AddFile("/bookmarks/kids", "MiGG/build/index.html"));
+                (StaticContentConventionBuilder.AddFile("/bookmarks/books", "../../javascript/MiGG-ng2/"));
 
             nancyConventions.StaticContentsConventions.Add
-                (StaticContentConventionBuilder.AddFile("/bookmarks", "MiGG/build/index.html"));
-
-            nancyConventions.StaticContentsConventions.Add
-                (StaticContentConventionBuilder.AddFile("/bookmarks/", "MiGG/build/index.html"));
-
-            nancyConventions.StaticContentsConventions.Add
-                (StaticContentConventionBuilder.AddDirectory("/bookmarks", "MiGG"));
+                (StaticContentConventionBuilder.AddFile("/bookmarks", "../../javascript/MiGG-ng2/"));
+            
         }
 
     }
