@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 
 const tagBundleModule = angular.module("TagBundleUtil", ['angular-loading-bar']).controller
     ("tagBundleCtrl", ['$scope', '$location', '$window', 'tagRepository', 'cfpLoadingBar'

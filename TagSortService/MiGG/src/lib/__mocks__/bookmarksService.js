@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 export const mocked_bookmarks = [{ 
  id:"6EE67F4C12280A5DCC6513DBF566726E"
 ,isPrivate:false

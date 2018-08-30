@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 ﻿//keys in state transtions dictionary represent element ids (see select boxes below) 
 //to which we hook our keyup event handlers
 const get_states_transitions = () => {

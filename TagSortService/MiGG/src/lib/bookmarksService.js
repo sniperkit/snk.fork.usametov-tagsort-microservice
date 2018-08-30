@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 var bookmarksService = {
     fetchBookmarks: function(url){    
         return fetch(url, {credentials: 'same-origin'})

@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 //import { shallow } from 'enzyme';

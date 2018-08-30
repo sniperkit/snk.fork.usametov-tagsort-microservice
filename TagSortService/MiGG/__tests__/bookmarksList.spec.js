@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 import React from 'react'
 import ReactDom from 'react-dom'
 import TestUtils from 'react-addons-test-utils'

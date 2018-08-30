@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 ﻿using Nancy;
 using Nancy.SimpleAuthentication;
 using Nancy.Testing;

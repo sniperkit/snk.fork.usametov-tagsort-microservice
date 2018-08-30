@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 import React from 'react';
 import Tag from './Tag';
 // import arrow_up from '../../public/images/vote_up.png';

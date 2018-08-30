@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
 import Bookmarks from '../lib/Bookmarks';
